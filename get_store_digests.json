@@ -1,0 +1,150 @@
+{
+    "digests": [
+        {
+            "displayMetaData": {
+                "description": "25.S1.4 - Daily\nRandom accessory x4",
+                "endDate": "2099-03-10T00:00:00.000Z",
+                "shoppefront": {
+                    "categories": [
+                        "DAILY"
+                    ],
+                    "id": "MYTHIC_SHOP"
+                },
+                "startDate": "2025-03-10T00:00:00.000Z"
+            },
+            "id": "50d75992-37a6-4f65-b2f0-f32e88ac805d",
+            "name": "MYTHIC_SHOPPE_DAILY_ROTATION_V2",
+            "productId": "d1c2664a-5938-4c41-8d1b-61fd51052c22"
+        },
+        {
+            "displayMetaData": {
+                "description": "25.S1.4 - Weekly\n\nChromas x8",
+                "endDate": "2099-02-13T00:00:00.000Z",
+                "shoppefront": {
+                    "categories": [
+                        "WEEKLY"
+                    ],
+                    "id": "MYTHIC_SHOP"
+                },
+                "startDate": "2025-03-05T00:00:00.000Z"
+            },
+            "id": "d341d43a-e9b6-492a-a4fd-0f213bd4a7da",
+            "name": "MYTHIC_SHOPPE_WEEKLY_ROTATION_V5",
+            "productId": "d1c2664a-5938-4c41-8d1b-61fd51052c22"
+        },
+        {
+            "displayMetaData": {
+                "assetsByCatalogEntry": {
+                    "7a79794c-5a78-4333-884c-4a70c99bf6f3": {
+                        "longTileUVs": {
+                            "u1": 0,
+                            "u2": 0,
+                            "v1": 0,
+                            "v2": 0
+                        },
+                        "overrideTileSize": "long-tile"
+                    }
+                },
+                "description": "25.6 Featured Mythic Shoppe Content\n",
+                "endDate": "2025-08-13T00:00:00.000Z",
+                "shoppefront": {
+                    "categories": [
+                        "FEATURED"
+                    ],
+                    "id": "MYTHIC_SHOP"
+                },
+                "startDate": "2025-03-06T00:00:00.000Z"
+            },
+            "id": "65f5e6ef-6fb8-452b-acef-e8a2c6302651",
+            "name": "MYTHIC_SHOPPE_FEATURED_25_6_V3",
+            "productId": "d1c2664a-5938-4c41-8d1b-61fd51052c22"
+        },
+        {
+            "displayMetaData": {
+                "assetsByCatalogEntry": {
+                    "7a79794c-5a78-4333-884c-4a70c99bf6f3": {
+                        "longTileUVs": {
+                            "u1": 0,
+                            "u2": 0,
+                            "v1": 0,
+                            "v2": 0
+                        },
+                        "overrideTileSize": "long-tile"
+                    },
+                    "c21184f4-fbc8-4891-8e33-dc1e4febd304": {
+                        "largeSquareUVs": {
+                            "u1": 0,
+                            "u2": 0,
+                            "v1": 0,
+                            "v2": 0
+                        },
+                        "overrideTileSize": "large-square"
+                    },
+                    "d5d5460a-5b21-45f9-9da2-ccfc12a74b97": {
+                        "longTileUVs": {
+                            "u1": 0,
+                            "u2": 0,
+                            "v1": 0,
+                            "v2": 0
+                        },
+                        "overrideTileSize": "long-tile"
+                    }
+                },
+                "description": "25.7 Featured Mythic Shoppe Content - v3 FINAL\n",
+                "endDate": "2025-04-30T19:00:00.000Z",
+                "shoppefront": {
+                    "categories": [
+                        "FEATURED"
+                    ],
+                    "id": "MYTHIC_SHOP"
+                },
+                "startDate": "2025-04-02T19:00:00.000Z"
+            },
+            "id": "07e4616b-1aea-4594-a581-276103d69503",
+            "name": "MYTHIC_SHOPPE_FEATURED_25_7_V3_FINAL",
+            "productId": "d1c2664a-5938-4c41-8d1b-61fd51052c22"
+        },
+        {
+            "displayMetaData": {
+                "description": "[15.6] Quantum Galaxy Slayer Zed Store (V9 - EXTENSION) ",
+                "endDate": "2025-04-16T17:00:00.000Z",
+                "endDateMilis": "1741207800000",
+                "product": "lol",
+                "sanctum": {
+                    "bannerId": "21b99a13-1739-4a93-a32c-c36b86a32d81"
+                },
+                "startDate": "2025-03-17T00:00:00.000Z",
+                "tables": {
+                    "8a01422b-5677-4ab2-b730-e5e1a6ea26c1": {
+                        "nameTraKey": "",
+                        "priority": 0
+                    },
+                    "a6b3b297-fcb8-4d7e-88d0-c17745235852": {
+                        "nameTraKey": "",
+                        "priority": 0
+                    }
+                }
+            },
+            "id": "26f3e2c7-2f0f-4f18-955c-c8cfe5d9c22c",
+            "name": "[15.6] Quantum Galaxy Slayer Zed Store (V9 - EXTENSION) ",
+            "productId": "d1c2664a-5938-4c41-8d1b-61fd51052c22"
+        },
+        {
+            "displayMetaData": {
+                "description": "25.S1.4 - Biweekly - Random skins x12",
+                "endDate": "2099-03-19T00:00:00.000Z",
+                "shoppefront": {
+                    "categories": [
+                        "BIWEEKLY"
+                    ],
+                    "id": "MYTHIC_SHOP",
+                    "overrideTileSize": "long-tile"
+                },
+                "startDate": "2025-03-19T00:00:00.000Z"
+            },
+            "id": "c5b7dff8-106a-47c7-9d15-f643b4434154",
+            "name": "MYTHIC_SHOPPE_BIWEEKLY_ROTATION_V5",
+            "productId": "d1c2664a-5938-4c41-8d1b-61fd51052c22"
+        }
+    ]
+}
