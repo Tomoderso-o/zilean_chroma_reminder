@@ -3,9 +3,7 @@ import requests
 import time
 import os
 import sys
-# if sys.platform == "win32":
-#     import ctypes
-#     ctypes.windll.kernel32.SetDllDirectoryW(None)
+
 
 def get_resource_path(filename):
     if getattr(sys, 'frozen', False):
