@@ -29,3 +29,4 @@ $encodedAuth = [Convert]::ToBase64String([Text.Encoding]::ASCII.GetBytes("riot:$
 
 Write-Host $port
 Write-Host $encodedAuth
+Write-Host $leagueDir
