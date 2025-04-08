@@ -1,16 +1,24 @@
 import subprocess
 import requests
 import time
-
-import sys
-if sys.platform == "win32":
-    import ctypes
-    ctypes.windll.kernel32.SetDllDirectoryW(None)
-
 import os
-os.chdir(os.path.dirname(__file__))
+import sys
+# if sys.platform == "win32":
+#     import ctypes
+#     ctypes.windll.kernel32.SetDllDirectoryW(None)
+
+def get_resource_path(filename):
+    if getattr(sys, 'frozen', False):
+        dirname = os.path.dirname(sys.executable)
+        base_path = os.path.join(dirname, '_internal')
+    else:
+        base_path = os.path.dirname(__file__)
+        
+    return f'&"{os.path.join(base_path, filename)}"'
+
 # get Basic auth string, port and league directory
-auth_script = "./get_auth.ps1"
+auth_script = get_resource_path("get_auth.ps1")
+print(auth_script)
 output = subprocess.Popen(
     [
     'powershell.exe', auth_script
@@ -60,12 +68,10 @@ if True:
     subprocess.Popen(
         [
         'powershell.exe', 
-        './toast_script.ps1', 
+        get_resource_path('toast_script.ps1'), 
         f"'{league_dir}'",
         "'Zilean ist im Shop!'",
         "'Mythic Shop'"
         ], 
         shell=True,
     )
-    
-    exit()
