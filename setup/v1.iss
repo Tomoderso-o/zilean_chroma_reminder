@@ -35,6 +35,7 @@ OutputDir=C:\Users\Tom Bangemann\development\zilean_chroma_reminder\setup
 OutputBaseFilename=wizard
 SolidCompression=yes
 WizardStyle=modern
+SetupIconFile=app_icon.ico
 
 [Languages]
 Name: "english"; MessagesFile: "compiler:Default.isl"
