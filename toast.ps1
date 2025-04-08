@@ -1,6 +1,6 @@
 ﻿# Find the running League Client process
-
-
+$zileanChromaEng = ""
+$zileanChromaGer = ""
 
 # Step 1: Wait for League Client
 $processName = "LeagueClientUx"
@@ -31,6 +31,7 @@ $password = $lockfileParts[3]
 
 $encodedAuth = [Convert]::ToBase64String([Text.Encoding]::ASCII.GetBytes("riot:$password"))
 $authHeader = @{ Authorization = "Basic $encodedAuth" }
+$headers = @{ Authorization = "Basic $encodedAuth"; "Content-Type" = "application/json" }
 
 Write-Host "LCU API detected at port $port"
 
@@ -39,12 +40,17 @@ $lcuEndpoint = "https://127.0.0.1:$port/lol-nacho/v1/get-active-stores"
 
 
 # Disable SSL certificate validation for this session
-[System.Net.ServicePointManager]::ServerCertificateValidationCallback = { $true }
+[System.Net.ServicePointManager]::ServerCertificateValidationCallback = { Write-Host 123; $true }
+[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 
 while ($true) {
     #try {
-        Write-Host $encodedAuth
-        $response = Invoke-RestMethod -Uri $lcuEndpoint -Headers $authHeader -Method "Get"
+        Write-Host "curl -H `"Authorization: Basic $encodedAuth`" -H 'Content-Type: application/json' --insecure `"https://127.0.0.1:$port/lol-nacho/v1/set-active-stores/`" -X POST -d '{`"request`": `"`"}'"
+        Write-Host "curl -H `"Authorization: Basic $encodedAuth`" -H 'Content-Type: application/json' --insecure `"https://127.0.0.1:$port/lol-nacho/v1/get-active-stores`""
+        #$response = Invoke-RestMethod -Uri $lcuEndpoint -Headers $authHeader -Method "Get"
+        Write-Host "Invoke-WebRequest -Uri `"$lcuEndpoint`" -Headers $authHeader -Method `"Get`""
+        $response = Invoke-RestMethod -Uri $lcuEndpoint -Headers $authHeader -Method "Get" -Verbose
+        Write-Host $headers.Authorization
         
         if($response) {
             Write-Host "Response"
@@ -60,15 +66,16 @@ while ($true) {
     #}
     Start-Sleep -Seconds 5
 }
-Invoke-RestMethod -
+
 # Step 4: Show Windows Toast Notification
 Add-Type -AssemblyName System.Windows.Forms 
 $global:balloon = New-Object System.Windows.Forms.NotifyIcon
-$path = (Get-Process -Id $pid).Path
+#$path = (Get-Process -Id $pid).Path
+$path = Join-Path -Path $leagueDir -ChildPath "LeagueClient.exe"
 $balloon.Icon = [System.Drawing.Icon]::ExtractAssociatedIcon($path) 
-$balloon.BalloonTipIcon = [System.Windows.Forms.ToolTipIcon]::Warning 
-$balloon.BalloonTipText = 'Test'
-$balloon.BalloonTipTitle = "Test" 
+$balloon.BalloonTipIcon = [System.Windows.Forms.ToolTipIcon]::Info
+$balloon.BalloonTipText = 'Zilean gefunden!'
+$balloon.BalloonTipTitle = "Zilean Chroma" 
 $balloon.Visible = $true 
 $balloon.ShowBalloonTip(5000)
 
