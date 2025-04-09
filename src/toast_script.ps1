@@ -9,10 +9,10 @@ $path = (Get-Process -Id $pid).Path
 #$path = Join-Path -Path $leagueDir -ChildPath "LeagueClientUx.exe"
 $balloon.Icon = [System.Drawing.Icon]::ExtractAssociatedIcon($path) 
 $balloon.BalloonTipIcon = [System.Windows.Forms.ToolTipIcon]::Info
-$balloon.BalloonTipText = $toastText
-$balloon.BalloonTipTitle = $toastTitle 
+$balloon.BalloonTipText = "$toastText"
+$balloon.BalloonTipTitle = "$toastTitle" 
 $balloon.Visible = $true 
-$balloon.ShowBalloonTip(5000)
+$balloon.ShowBalloonTip(30000)
 
 
 Write-Host "Notification Sent!"

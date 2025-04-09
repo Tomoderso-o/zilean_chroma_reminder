@@ -33,15 +33,14 @@ def get_app_dir():
 def get_resource_path(filename):
     return os.path.join(get_app_dir(), filename)
 
+def get_ps_path_for_popen(filename):
+    return f'&"{get_resource_path(filename)}"'
 
 # get Basic auth string, port and league directory
 output = subprocess.Popen(
     [
         'powershell.exe', 
-        '-ExecutionPolicy',
-        'Bypass',
-        '-File',
-        get_resource_path("get_auth.ps1")
+        get_ps_path_for_popen("get_auth.ps1")
     ], 
     shell=True, 
     stdout=subprocess.PIPE,
@@ -64,8 +63,6 @@ host = f'https://127.0.0.1:{port}'
 
 
 while True:
-    # client needs a short time to be ready
-    time.sleep(5)
     try:
         # set active store, so get-active-stores is available
         r = requests.post(
@@ -76,7 +73,8 @@ while True:
         )
         break
     except Exception:
-        pass
+        # client needs a short time to be ready
+        time.sleep(1)
 
 # get mythic shop
 response = requests.get(
@@ -92,13 +90,11 @@ for reminder in get_reminder_list():
         subprocess.Popen(
             [
                 'powershell.exe', 
-                '-ExecutionPolicy',
-                'Bypass',
-                '-File',
-                get_resource_path('toast_script.ps1'), 
+                get_ps_path_for_popen('toast_script.ps1'), 
                 f"'{league_dir}'",
-                "'Zilean Chroma Reminder'"
+                "'Zilean Chroma Reminder'",
                 f"'{reminder} ist im Mythic Shop!'",
             ], 
             shell=True,
         )
+        time.sleep(30)
