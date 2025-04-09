@@ -33,14 +33,15 @@ def get_app_dir():
 def get_resource_path(filename):
     return os.path.join(get_app_dir(), filename)
 
-def get_ps_path_for_popen(filename):
-    return f'&"{get_resource_path(filename)}"'
 
 # get Basic auth string, port and league directory
 output = subprocess.Popen(
     [
         'powershell.exe', 
-        get_ps_path_for_popen("get_auth.ps1")
+        '-ExecutionPolicy',
+        'Bypass',
+        '-File',
+        get_resource_path("get_auth.ps1")
     ], 
     shell=True, 
     stdout=subprocess.PIPE,
@@ -90,10 +91,13 @@ for reminder in get_reminder_list():
         subprocess.Popen(
             [
                 'powershell.exe', 
-                get_ps_path_for_popen('toast_script.ps1'), 
+                '-ExecutionPolicy',
+                'Bypass',
+                '-File',
+                get_resource_path("toast_script.ps1"),
                 f"'{league_dir}'",
-                "'Zilean Chroma Reminder'",
-                f"'{reminder} ist im Mythic Shop!'",
+                "Zilean Chroma Reminder",
+                f"{reminder} ist im Mythic Shop!",
             ], 
             shell=True,
         )
