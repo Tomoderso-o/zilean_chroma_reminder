@@ -5,17 +5,39 @@ import os
 import sys
 
 
-def get_resource_path(filename):
+def get_reminder_list():
+    filepath = get_resource_path('shop_reminder_list.txt')
+    if not os.path.exists(filepath):
+        with open(filepath, 'w') as f:
+            f.write('')
+    
+    with open(filepath, 'r') as f:
+        lines = f.readlines()
+    # remove newlines and carriege returns
+    reminder_items = []
+    for line in lines:
+        l = line.replace('\n', '').replace('\r', '')
+        if l:
+            reminder_items.append(l)
+    return reminder_items
+
+
+def get_app_dir():
     if getattr(sys, 'frozen', False):
         dirname = os.path.dirname(sys.executable)
         base_path = os.path.join(dirname, '_internal')
     else:
         base_path = os.path.dirname(__file__)
-        
-    return f'&"{os.path.join(base_path, filename)}"'
+    return base_path
+
+def get_resource_path(filename):
+    return os.path.join(get_app_dir(), filename)
+
+def ps_script_path_for_popen(filename):
+    return f'&"{get_resource_path(filename)}"'
 
 # get Basic auth string, port and league directory
-auth_script = get_resource_path("get_auth.ps1")
+auth_script = ps_script_path_for_popen("get_auth.ps1")
 print(auth_script)
 output = subprocess.Popen(
     [
@@ -40,7 +62,10 @@ headers = {
 }
 host = f'https://127.0.0.1:{port}' 
 
+
 while True:
+    # client needs a short time to be ready
+    time.sleep(5)
     try:
         # set active store, so get-active-stores is available
         r = requests.post(
@@ -51,7 +76,7 @@ while True:
         )
         break
     except Exception:
-        time.sleep(5)
+        pass
 
 # get mythic shop
 response = requests.get(
@@ -59,17 +84,18 @@ response = requests.get(
     headers=headers, 
     verify=False
 )
-mythic_shop = str(response.json())
 
-if True:
-#if 'Zilean' in mythic_shop:
-    subprocess.Popen(
-        [
-        'powershell.exe', 
-        get_resource_path('toast_script.ps1'), 
-        f"'{league_dir}'",
-        "'Zilean ist im Shop!'",
-        "'Mythic Shop'"
-        ], 
-        shell=True,
-    )
+mythic_shop = str(response.json()).lower()
+
+for reminder in get_reminder_list():
+    if reminder.lower() in mythic_shop:
+        subprocess.Popen(
+            [
+                'powershell.exe', 
+                ps_script_path_for_popen('toast_script.ps1'), 
+                f"'{league_dir}'",
+                "'Zilean Chroma Reminder'"
+                f"'{reminder} ist im Mythic Shop!'",
+            ], 
+            shell=True,
+        )

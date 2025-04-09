@@ -32,4 +32,4 @@ dann abrufen
 
 `curl -H "Authorization: Basic <encoded>" -H 'Content-Type: application/json'  --insecure "https://127.0.0.1:59048/lol-nacho/v1/get-active-stores"`
 
-`pyinstaller src/main.py --name "Zilean Chroma Reminder" --add-data "src/get_auth.ps1:." --add-data "src/toast_script.ps1:." --icon "setup/app_icon.ico" --noconfirm --noconsole`
+`pyinstaller src/main.py --name "Zilean Chroma Reminder" --add-data "src/get_auth.ps1:." --add-data "src/toast_script.ps1:." --add-data "src/shop_reminder_list.txt:." --icon "setup/app_icon.ico" --noconfirm --noconsole`

@@ -5,7 +5,7 @@ a = Analysis(
     ['src\\main.py'],
     pathex=[],
     binaries=[],
-    datas=[('src/get_auth.ps1', '.'), ('src/toast_script.ps1', '.')],
+    datas=[('src\\get_auth.ps1', '.'), ('src\\toast_script.ps1', '.'), ('src\\shop_reminder_list.txt', '.')],
     hiddenimports=[],
     hookspath=[],
     hooksconfig={},
