@@ -1,5 +1,6 @@
 import subprocess
 import requests
+import random
 import time
 import os
 import sys
@@ -62,6 +63,9 @@ headers = {
 }
 host = f'https://127.0.0.1:{port}' 
 
+# Wait for the client
+random_time = random.randrange(0 , 1000, 1) / 100
+time.sleep(30 + random_time)
 
 while True:
     try:
