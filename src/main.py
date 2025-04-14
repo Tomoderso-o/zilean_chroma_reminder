@@ -78,17 +78,21 @@ while True:
         )
         break
     except Exception:
-        # client needs a short time to be ready
-        time.sleep(1)
+        time.sleep(5 + random_time)
 
-# get mythic shop
-response = requests.get(
-    f'{host}/lol-nacho/v1/get-active-stores', 
-    headers=headers, 
-    verify=False
-)
+while True:
+    try:
+        # set active store, so get-active-stores is available
+        response = requests.get(
+            f'{host}/lol-nacho/v1/get-active-stores', 
+            headers=headers, 
+            verify=False
+        )
+        break
+    except Exception:
+        time.sleep(5 + random_time)
 
-mythic_shop = str(response.json()).lower()
+mythic_shop = str(response.json())
 
 for reminder in get_reminder_list():
     if reminder.lower() in mythic_shop:
