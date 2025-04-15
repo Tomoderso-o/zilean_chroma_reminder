@@ -76,10 +76,12 @@ while True:
             data='{"request": "MYTHIC_SHOP"}',
             verify=False
         )
+        print(r.status_code)
         break
     except Exception:
         time.sleep(5 + random_time)
 
+time.sleep(2)
 while True:
     try:
         # set active store, so get-active-stores is available
@@ -88,15 +90,33 @@ while True:
             headers=headers, 
             verify=False
         )
-        break
+        if not response.ok:
+            raise Exception('Store not ready')
+        else:
+            break
     except Exception:
         time.sleep(5 + random_time)
 
 mythic_shop = str(response.json())
 
-for reminder in get_reminder_list():
-    if reminder.lower() in mythic_shop:
-        subprocess.Popen(
+reminder_list = get_reminder_list()
+
+for reminder in reminder_list:
+    if reminder.lower() in mythic_shop.lower():
+        with open(get_resource_path(reminder + '.txt'), 'w') as f:
+            f.writelines([
+                _ + '\n' for _ in  
+                [
+                '|| Toast Script Path',
+                get_resource_path("toast_script.ps1"), 
+                '|| Reminder',
+                reminder, 
+                '|| Reminder List',
+                str(reminder_list), 
+                '|| Mythic Shop',
+                mythic_shop
+            ]])
+        balloon = subprocess.Popen(
             [
                 'powershell.exe', 
                 '-ExecutionPolicy',
@@ -109,4 +129,5 @@ for reminder in get_reminder_list():
             ], 
             shell=True,
         )
-        time.sleep(30)
+        balloon.wait()
+        time.sleep(10)

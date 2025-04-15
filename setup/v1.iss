@@ -6,11 +6,12 @@
 #define MyAppPublisher "Tomoderso"
 #define MyAppURL "https://github.com/Tomoderso-o/zilean_chroma_reminder"
 #define MyAppExeName "Zilean Chroma Reminder.exe"
+#define LocalRepoPath "G:\Dev\zilean_chroma_reminder"
 
 [Setup]
 ; NOTE: The value of AppId uniquely identifies this application. Do not use the same AppId value in installers for other applications.
 ; (To generate a new GUID, click Tools | Generate GUID inside the IDE.)
-AppId={{8FB34C4E-52F7-485C-86AB-E68E926EED8F}
+AppId=tomos_zilean_chroma_reminder
 AppName={#MyAppName}
 AppVersion={#MyAppVersion}
 ;AppVerName={#MyAppName} {#MyAppVersion}
@@ -31,7 +32,7 @@ ArchitecturesInstallIn64BitMode=x64compatible
 DisableProgramGroupPage=yes
 ; Remove the following line to run in administrative install mode (install for all users).
 PrivilegesRequired=lowest
-OutputDir=C:\Users\Tom Bangemann\development\zilean_chroma_reminder\setup
+OutputDir={#LocalRepoPath}\setup
 OutputBaseFilename={#MyAppName} Installer
 SolidCompression=yes
 WizardStyle=modern
@@ -42,8 +43,8 @@ Name: "english"; MessagesFile: "compiler:Default.isl"
 Name: "german"; MessagesFile: "compiler:Languages\German.isl"
 
 [Files]
-Source: "C:\Users\Tom Bangemann\development\zilean_chroma_reminder\dist\Zilean Chroma Reminder\{#MyAppExeName}"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Users\Tom Bangemann\development\zilean_chroma_reminder\dist\Zilean Chroma Reminder\_internal\*"; DestDir: "{app}\_internal"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "{#LocalRepoPath}\dist\Zilean Chroma Reminder\{#MyAppExeName}"; DestDir: "{app}"; Flags: ignoreversion
+Source: "{#LocalRepoPath}\dist\Zilean Chroma Reminder\_internal\*"; DestDir: "{app}\_internal"; Flags: ignoreversion recursesubdirs createallsubdirs
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Icons]

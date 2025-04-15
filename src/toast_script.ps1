@@ -12,7 +12,7 @@ $balloon.BalloonTipIcon = [System.Windows.Forms.ToolTipIcon]::Info
 $balloon.BalloonTipText = "$toastText"
 $balloon.BalloonTipTitle = "$toastTitle" 
 $balloon.Visible = $true 
-$balloon.ShowBalloonTip(30000)
+$balloon.ShowBalloonTip(0)
 
 
 Write-Host "Notification Sent!"
