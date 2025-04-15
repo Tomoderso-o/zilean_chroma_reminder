@@ -33,8 +33,7 @@ def get_reminder_list():
 def get_app_dir():
     # gets the correct app directory, regardless if in dev or deployed
     if getattr(sys, 'frozen', False):
-        dirname = os.path.dirname(sys.executable)
-        base_path = os.path.join(dirname, '_internal')
+        base_path = os.path.dirname(sys.executable)
     else:
         base_path = os.path.dirname(__file__)
     return base_path

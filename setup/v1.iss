@@ -43,8 +43,8 @@ Name: "english"; MessagesFile: "compiler:Default.isl"
 Name: "german"; MessagesFile: "compiler:Languages\German.isl"
 
 [Files]
-Source: "{#LocalRepoPath}\dist\Zilean Chroma Reminder\{#MyAppExeName}"; DestDir: "{app}"; Flags: ignoreversion
-Source: "{#LocalRepoPath}\dist\Zilean Chroma Reminder\_internal\*"; DestDir: "{app}\_internal"; Flags: ignoreversion recursesubdirs createallsubdirs
+
+Source: "{#LocalRepoPath}\dist\{#MyAppName}\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Icons]
