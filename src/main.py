@@ -64,8 +64,8 @@ headers = {
 host = f'https://127.0.0.1:{port}' 
 
 # Wait for the client
-random_time = random.randrange(0 , 1000, 1) / 100
-time.sleep(30 + random_time)
+random_time = random.randrange(0 , 200, 1) / 100
+time.sleep(1 + random_time)
 
 while True:
     try:
@@ -79,7 +79,7 @@ while True:
         print(r.status_code)
         break
     except Exception:
-        time.sleep(5 + random_time)
+        time.sleep(2 + random_time)
 
 time.sleep(2)
 while True:
@@ -95,7 +95,7 @@ while True:
         else:
             break
     except Exception:
-        time.sleep(5 + random_time)
+        time.sleep(2 + random_time)
 
 mythic_shop = str(response.json())
 
@@ -116,18 +116,21 @@ for reminder in reminder_list:
                 '|| Mythic Shop',
                 mythic_shop
             ]])
-        balloon = subprocess.Popen(
+        
+        app_display_name = 'Zilean Toasts'
+        toast_text = '💖'
+        toast_title = f'{reminder} ist im Mythic Shop!'
+        image_path = get_resource_path("zilean_toast.png")
+        expiration_in_mins = "10"
+        # display the toast notification
+        toast_notification = subprocess.Popen(
             [
-                'powershell.exe', 
-                '-ExecutionPolicy',
-                'Bypass',
-                '-File',
-                get_resource_path("toast_script.ps1"),
-                f"'{league_dir}'",
-                "Zilean Chroma Reminder",
-                f"{reminder} ist im Mythic Shop!",
-            ], 
+                # call script
+                'powershell.exe', '-ExecutionPolicy', 'Bypass', '-File', get_resource_path("toast_script.ps1"),
+                # script inputs. Order matters
+                app_display_name, toast_text, toast_title, image_path, expiration_in_mins
+            ],
             shell=True,
         )
-        balloon.wait()
-        time.sleep(10)
+        toast_notification.wait()
+        time.sleep(1)
