@@ -6,15 +6,22 @@ import os
 import sys
 
 
+# random time between 0s and 2s. May help against Vanguard?
+time_salt = random.randrange(0 , 200, 1) / 100
+
 def get_reminder_list():
     filepath = get_resource_path('shop_reminder_list.txt')
+    # create if not exists
     if not os.path.exists(filepath):
         with open(filepath, 'w') as f:
-            f.write('')
+            f.write('Sugar Rush Zilean\n')
+            f.write('Zilean\n')
     
+    # open existing file
     with open(filepath, 'r') as f:
         lines = f.readlines()
-    # remove newlines and carriege returns
+
+    # remove newlines and carriage returns
     reminder_items = []
     for line in lines:
         l = line.replace('\n', '').replace('\r', '')
@@ -24,6 +31,7 @@ def get_reminder_list():
 
 
 def get_app_dir():
+    # gets the correct app directory, regardless if in dev or deployed
     if getattr(sys, 'frozen', False):
         dirname = os.path.dirname(sys.executable)
         base_path = os.path.join(dirname, '_internal')
@@ -38,20 +46,16 @@ def get_resource_path(filename):
 # get Basic auth string, port and league directory
 output = subprocess.Popen(
     [
-        'powershell.exe', 
-        '-ExecutionPolicy',
-        'Bypass',
-        '-File',
-        get_resource_path("get_auth.ps1")
+        'powershell.exe', '-ExecutionPolicy', 'Bypass', '-File', get_resource_path("get_auth.ps1")
     ], 
-    shell=True, 
+    shell=True,  # without this a terminal window would open for a split second
+    # allows capturing output
     stdout=subprocess.PIPE,
     stderr=subprocess.PIPE
 )
 output.wait()
+# output is provided using Write-Host, so it needs to be parsed accordingly
 output_lines = output.stdout.read().decode().split('\n')
-print(output_lines)
-print(output.stderr.read())
 port = output_lines[0].strip()
 encoded_auth = output_lines[1].strip()
 league_dir = output_lines[2].strip()
@@ -64,64 +68,69 @@ headers = {
 host = f'https://127.0.0.1:{port}' 
 
 # Wait for the client
-random_time = random.randrange(0 , 200, 1) / 100
-time.sleep(1 + random_time)
+time.sleep(1 + time_salt)
 
+set_store_retries = 0
 while True:
     try:
         # set active store, so get-active-stores is available
-        r = requests.post(
+        response = requests.post(
             f'{host}/lol-nacho/v1/set-active-stores',
             headers=headers,
             data='{"request": "MYTHIC_SHOP"}',
             verify=False
         )
-        print(r.status_code)
-        break
+        # this just returns no content, hence 204
+        if response.status_code == 204:
+            break
+        else:
+            raise Exception('Client not ready')
     except Exception:
-        time.sleep(2 + random_time)
+        if set_store_retries > 20:
+            sys.exit(1)
+        else:
+            set_store_retries += 1
+            time.sleep(2 + time_salt)
 
-time.sleep(2)
+# small delay because client needs time to change state
+time.sleep(1)
+
+get_active_stores_retries = 0
 while True:
     try:
         # set active store, so get-active-stores is available
         response = requests.get(
             f'{host}/lol-nacho/v1/get-active-stores', 
             headers=headers, 
-            verify=False
+            verify=False,
         )
-        if not response.ok:
-            raise Exception('Store not ready')
-        else:
+        if response.status_code == 200:
             break
+        else:
+            # there would be an endpoint to check if the store is ready, but why not just use this?
+            raise Exception('Store not ready')
     except Exception:
-        time.sleep(2 + random_time)
+        if get_active_stores_retries > 20:
+            sys.exit(1)
+        else:
+            get_active_stores_retries += 1
+            time.sleep(2 + time_salt)
 
+# convert reponse to string because it's sufficient and so no complex parsing is needed
 mythic_shop = str(response.json())
 
+# read local reminder list file
 reminder_list = get_reminder_list()
 
+# show toast for every reminder
 for reminder in reminder_list:
     if reminder.lower() in mythic_shop.lower():
-        with open(get_resource_path(reminder + '.txt'), 'w') as f:
-            f.writelines([
-                _ + '\n' for _ in  
-                [
-                '|| Toast Script Path',
-                get_resource_path("toast_script.ps1"), 
-                '|| Reminder',
-                reminder, 
-                '|| Reminder List',
-                str(reminder_list), 
-                '|| Mythic Shop',
-                mythic_shop
-            ]])
-        
+        # input args for toast
         app_display_name = 'Zilean Toasts'
-        toast_text = '💖'
+        toast_text = '💖' if reminder == 'Sugar Rush Zilean' else random.choice('👀✨🔔🌟💫')
         toast_title = f'{reminder} ist im Mythic Shop!'
         image_path = get_resource_path("zilean_toast.png")
-        expiration_in_mins = "10"
+        expiration_in_mins = "30"
         # display the toast notification
         toast_notification = subprocess.Popen(
             [
@@ -130,7 +139,7 @@ for reminder in reminder_list:
                 # script inputs. Order matters
                 app_display_name, toast_text, toast_title, image_path, expiration_in_mins
             ],
-            shell=True,
+            shell=True,  # without this a terminal window would open for a split second
         )
         toast_notification.wait()
         time.sleep(1)
