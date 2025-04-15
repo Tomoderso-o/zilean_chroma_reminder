@@ -5,7 +5,7 @@ a = Analysis(
     ['src\\main.py'],
     pathex=[],
     binaries=[],
-    datas=[('src\\get_auth.ps1', '.'), ('src\\toast_script.ps1', '.'), ('src\\shop_reminder_list.txt', '.')],
+    datas=[('src\\', '.')],
     hiddenimports=[],
     hookspath=[],
     hooksconfig={},
@@ -21,7 +21,7 @@ exe = EXE(
     a.scripts,
     [],
     exclude_binaries=True,
-    name='Zilean Chroma Reminder',
+    name='Zilean Toasts',
     debug=False,
     bootloader_ignore_signals=False,
     strip=False,
@@ -33,6 +33,7 @@ exe = EXE(
     codesign_identity=None,
     entitlements_file=None,
     icon=['setup\\app_icon.ico'],
+    contents_directory='.',
 )
 coll = COLLECT(
     exe,
@@ -41,5 +42,5 @@ coll = COLLECT(
     strip=False,
     upx=True,
     upx_exclude=[],
-    name='Zilean Chroma Reminder',
+    name='Zilean Toasts',
 )
