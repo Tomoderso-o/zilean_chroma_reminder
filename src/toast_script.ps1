@@ -23,6 +23,9 @@ function Show-Notification {
     $Template = [Windows.UI.Notifications.ToastNotificationManager]::GetTemplateContent([Windows.UI.Notifications.ToastTemplateType]::ToastImageAndText02)
 
     $RawXml = [xml] $Template.GetXml()
+    # allows toast to show on screen, when do not disturb is on
+    # https://learn.microsoft.com/en-us/uwp/schemas/tiles/toastschema/element-toast
+    $RawXml.toast.SetAttribute("scenario", "urgent")
     ($RawXml.toast.visual.binding.text| Where-Object {$_.id -eq "1"}).AppendChild($RawXml.CreateTextNode($ToastTitle)) > $null
     ($RawXml.toast.visual.binding.text| Where-Object {$_.id -eq "2"}).AppendChild($RawXml.CreateTextNode($ToastText)) > $null
 
