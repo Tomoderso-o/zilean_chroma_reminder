@@ -69,41 +69,31 @@ host = f'https://127.0.0.1:{port}'
 # Wait for the client
 time.sleep(1 + time_salt)
 
-set_store_retries = 0
+get_active_stores_retries = 0
 while True:
     try:
         # set active store, so get-active-stores is available
-        response = requests.post(
+        set_store_response = requests.post(
             f'{host}/lol-nacho/v1/set-active-stores',
             headers=headers,
             data='{"request": "MYTHIC_SHOP"}',
             verify=False
         )
-        # this just returns no content, hence 204
-        if response.status_code == 204:
-            break
-        else:
-            raise Exception('Client not ready')
-    except Exception:
-        if set_store_retries > 20:
-            sys.exit(1)
-        else:
-            set_store_retries += 1
-            time.sleep(2 + time_salt)
+        
+        # small delay because client needs time to change state
+        time.sleep(1)
 
-# small delay because client needs time to change state
-time.sleep(1)
-
-get_active_stores_retries = 0
-while True:
-    try:
-        # set active store, so get-active-stores is available
-        response = requests.get(
+        # get-active-store
+        get_store_response = requests.get(
             f'{host}/lol-nacho/v1/get-active-stores', 
             headers=headers, 
             verify=False,
         )
-        if response.status_code == 200:
+
+        # only check get_store_response status code, 
+        # because set_store_response will always be 204 No Content.
+        # Sometimes set_store_response will also just not work. So retry until get_active_store succeeds
+        if get_store_response.status_code == 200:
             break
         else:
             # there would be an endpoint to check if the store is ready, but why not just use this?
@@ -116,7 +106,7 @@ while True:
             time.sleep(2 + time_salt)
 
 # convert reponse to string because it's sufficient and so no complex parsing is needed
-mythic_shop = str(response.json())
+mythic_shop = str(get_store_response.json())
 
 # read local reminder list file
 reminder_list = get_reminder_list()
